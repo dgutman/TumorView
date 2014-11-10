@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap-theme.min.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap-switch.min.css" />
+        <script src="js/jquery-1.9.0.min.js" type="text/javascript"></script>
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="js/bootstrap-switch.min.js" type="text/javascript"></script>
+        <script src="js/image_control.js" type="text/javascript"></script>
+        <title>Radiology Image Browser</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <script>
+
+			//http://getbootstrap.com/javascript/#tabs
+
+            //How to write JQuery custom function: http://stackoverflow.com/questions/9550866/how-to-create-custom-jquery-function-and-how-to-use-it
+            (function($) {
+                $.fn.loadDropdown = function(data_source) {
+                    //this.each(function() {
+                    this.empty();
+                    if (Object.prototype.toString.call(data_source) === "[object Object]") { //is object
+                        for (var k in data_source) {
+                            this.append('<option name="' + k + '">' + k + '</option>');
+                        }
+                    } else if (Object.prototype.toString.call(data_source) === "[object Array]") { //is array
+                        for (var i = 0; i < data_source.length; i++) {
+                            this.append('<option name="' + i + '">' + i + '</option>');
+                        }
+                    } else
+                        console.log('Load dropdown options fail ' + this.attr('id') + '; unrecognized data source format');
+                    //})
+                };
+            }(jQuery));
+            var images;
+            var image_object;
+            var flt = {};
+            $(document).ready(function() {
+                var xhr = $.ajax({
+                    type: "GET",
+                    url: 'http://node16.cci.emory.edu/Radiogenomics/gbm_subj_data_v1.json',
+                    async: false
+                });
+                images = JSON.parse(xhr.responseText);
+                $('#select_patient').loadDropdown(images);
+                $('#select_session').loadDropdown(images[$('#select_patient').val()]);
+                $('#select_image').loadDropdown(images[$('#select_patient').val()][$('#select_session').val()]["session_metadata"]["image_data"]);
+                $('#select_mask').loadDropdown(images[$('#select_patient').val()][$('#select_session').val()]["session_metadata"]["image_data"][$('#select_image').val()]['masks'])
+
+                $('#image_div').initImageTransform({'control_div_name':'image_ctl_1'})
+                $('#mask_div').initImageTransform({'control_div_name':'image_ctl_2','extra_filter':'url(#f3)'})
+                change_image();
+            });
+            $(function() {
+                $('#select_patient').change(function() {
+                    $('#select_session').loadDropdown(images[$('#select_patient').val()]);
+                    $('#select_session').change();
+                });
+                $('#select_session').change(function() {
+                    $('#select_image').loadDropdown(images[$('#select_patient').val()][$('#select_session').val()]["session_metadata"]["image_data"]);
+                    $('#select_image').change();
+                });
+                $('#select_image').change(function() {
+                    $('#select_mask').loadDropdown(images[$('#select_patient').val()][$('#select_session').val()]["session_metadata"]["image_data"][$('#select_image').val()]['masks']);
+                    $('#select_mask').change();
+                });
+                $('#select_mask').change(function() {
+                    change_image();
+                });
+                $('#mask_opacity').change(function() {
+                    $('#mask_opacity_text').text($('#mask_opacity').val());
+                    $('#mask_div').css({'opacity': $('#mask_opacity').val() / 100});
+                });
+                $("#mask_visible").bootstrapSwitch();
+                $('#mask_visible').on('switchChange.bootstrapSwitch', function(event, state) {
+                    if (!state) {
+                        $('#mask_div').css({'visibility': 'hidden'});
+                        $('#mask_opacity').attr('disabled', 'disabled');
+                    } else {
+                        $('#mask_div').css({'visibility': 'visible'});
+                        $('#mask_opacity').attr('disabled', false);
+                    }
+                });
+                $('#mask_opacity').change();
+            })
+            function change_image() {
+                var patient_id = $('#select_patient').val();
+                var session_id = $('#select_session').val();
+                var image_type = $('#select_image').val();
+                var mask_id = parseInt($('#select_mask').val());
+                image_object = images[patient_id][session_id]["session_metadata"]["image_data"][image_type];
+                $('#image_div').css({
+                    'width': image_object.slice_width + "px",
+                    'height': image_object.slice_height + "px",
+                    'display': 'block',
+                    'background-image': 'url(http://node16.cci.emory.edu/GBM_Images/RadioGenomics/' + image_object.base_url + ')',
+                    'background-position': '0px 0px',
+                    'z-index': '99',
+                });
+                $('#mask_div').css({
+                    'width': image_object.slice_width + "px",
+                    'height': image_object.slice_height + "px",
+                    'display': 'block',
+                    'background-image': 'url(http://node16.cci.emory.edu/GBM_Images/RadioGenomics/' + image_object.masks[mask_id][0].mask_url + ')',
+                    'background-position': '0px 0px',
+                    'z-index': '100',
+                    'opacity': '1.0',
+                });
+                $('#select_slice').attr('max', image_object.num_slices - 1);
+                $('#select_slice').val(0);
+                $('#slice_num').text('0');
+                $('#slice_total').text(image_object.num_slices-1);
+                $('#mask_opacity').change();
+            }
+            function change_slice(slice_id) {
+                var images_per_row = Math.floor(image_object.main_image_width / image_object.slice_width);
+                var nrow = Math.floor((slice_id) / images_per_row);
+                var ncol = (slice_id) % images_per_row;
+                var coord_top_left = [ncol * image_object.slice_width, nrow * image_object.slice_height];
+                //console.log(coord_top_left);
+                $('#image_div').css({
+                    'background-position': '-' + coord_top_left[0] + 'px -' + coord_top_left[1] + 'px',
+                });
+                $('#mask_div').css({
+                    'background-position': '-' + coord_top_left[0] + 'px -' + coord_top_left[1] + 'px',
+                });
+                $('#slice_num').text(slice_id);
+            }
+        </script>
+        <div class="navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">MRI Image Viewer</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#">Stats</a></li>
+                        <li class="active"><a href="#">2D Viewer</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 panel" id="image_div_container">
+                    <div id="image_div" style="position:absolute;left:20px;top:20px;height:250px;width:250px"></div>
+                    <div id="mask_div" style="position:absolute;left:20px;top:20px;height:250px;width:250px"></div>
+                </div>
+                <div class="col-md-4 panel">
+                    <br ><br >
+                    Patient ID: <select id="select_patient"></select><br><br>
+                    Session ID: <select id="select_session"></select><br><br>
+                    Image ID: <select id="select_image"></select><br><br>
+                    Masks: <select id="select_mask"></select><br><br>
+                    Drag to select slide from this session: <br>
+                    <input id=select_slice type="range" min="0" max="9" value="0" onchange="change_slice(this.value)" style="width:300px">
+                    You are viewing slice number <span id="slice_num"></span> out of <span id="slice_total"></span> <br>
+
+                    <br>
+                    Mask visible: <input type="checkbox" id="mask_visible" checked> <br><br>
+                    Mask Opacity:<input type="range" min="0" max="100" value="50" id="mask_opacity" style="width: 100px;display:inline-block"><span id="mask_opacity_text">50</span>%<br>
+                </div>
+                <div class="col-md-4 panel" id="image_control_div">
+                    Base Image Control: <div id="image_ctl_1"></div><br>
+                    Mask Control: <div id="image_ctl_2"></div>
+                </div>
+            </div>
+        </div>
+
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <defs>
+    <filter id="f1" x="0" y="0">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="14" />
+    </filter>
+
+    <filter id="f3">
+        <feColorMatrix type="matrix" values="1 0.0 1 0 0  -1 0 0 0 0  -0.5 -0.5 0 0 0  0 0 0 1 0" />
+    </filter>
+    </defs>
+    <circle cx="100" cy="100" r="100" stroke="black"
+            stroke-width="1" fill="red" filter="url(#Matrix)" />
+    </svg>
+
+</body>
+</html>

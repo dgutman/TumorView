@@ -1,0 +1,14 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  padding-top: 65px; 
+  margin-bottom: 60px;
+}
+
+
+
+#image_div_container{height:800px;border:2px solid;border-radius:10px;padding:5px;margin:10px 10px 0px 0px}
+.panel{height:395px;border:2px solid;border-radius:10px;padding:5px;margin:10px 10px 0px 0px}
