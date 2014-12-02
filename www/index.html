@@ -15,8 +15,6 @@
     <body>
         <script>
 
-			//http://getbootstrap.com/javascript/#tabs
-
             //How to write JQuery custom function: http://stackoverflow.com/questions/9550866/how-to-create-custom-jquery-function-and-how-to-use-it
             (function($) {
                 $.fn.loadDropdown = function(data_source) {
@@ -35,13 +33,20 @@
                     //})
                 };
             }(jQuery));
+
             var images;
             var image_object;
             var flt = {};
+
+
+
             $(document).ready(function() {
+
+			
+
                 var xhr = $.ajax({
                     type: "GET",
-                    url: 'http://node16.cci.emory.edu/Radiogenomics/gbm_subj_data_v1.json',
+                    url: 'gbm_subj_data_v1.json',
                     async: false
                 });
                 images = JSON.parse(xhr.responseText);
@@ -86,6 +91,8 @@
                 });
                 $('#mask_opacity').change();
             })
+
+
             function change_image() {
                 var patient_id = $('#select_patient').val();
                 var session_id = $('#select_session').val();
@@ -96,7 +103,7 @@
                     'width': image_object.slice_width + "px",
                     'height': image_object.slice_height + "px",
                     'display': 'block',
-                    'background-image': 'url(http://node16.cci.emory.edu/GBM_Images/RadioGenomics/' + image_object.base_url + ')',
+                    'background-image': 'url(http://node15.cci.emory.edu/TumorView/' + image_object.base_url + ')',
                     'background-position': '0px 0px',
                     'z-index': '99',
                 });
@@ -104,7 +111,7 @@
                     'width': image_object.slice_width + "px",
                     'height': image_object.slice_height + "px",
                     'display': 'block',
-                    'background-image': 'url(http://node16.cci.emory.edu/GBM_Images/RadioGenomics/' + image_object.masks[mask_id][0].mask_url + ')',
+                    'background-image': 'url(http://node15.cci.emory.edu/TumorView/' + image_object.masks[mask_id][0].mask_url + ')',
                     'background-position': '0px 0px',
                     'z-index': '100',
                     'opacity': '1.0',
@@ -130,7 +137,18 @@
                 $('#slice_num').text(slice_id);
             }
         </script>
-        <div class="navbar-default navbar-fixed-top" role="navigation">
+        
+        <!-- Nav Tabs -->
+        <ul class="nav nav-tabs navbar-fixed-top" role="tablist">
+        	<li role=presentation" class="active"><a href="#home" role="tab" data-toggle="tab">Home</a><li>
+        	<li role="presentation"><a href="#view_2d" role="tab" data-toggle="tab">2D Viewer</a></li>
+        	<li role="presentation"><a href="#view_3d" role="tab" data-toggle="tab">3D Demo</a></li>
+        	<li role="presentation"><a href="#settings" role="tab" data-toggle="tab">Settings</a></li>
+        	
+        </ul>
+        
+        
+       <!-- <div class="navbar-default navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -148,7 +166,16 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> -->
+        
+        <div class="tab-content">
+	  <div role="tabpanel" class="tab-pane active" id="home">A</div>
+	  <div role="tabpanel" class="tab-pane" id="view_2d">B</div>
+	  <div role="tabpanel" class="tab-pane" id="view_3d">C</div>
+	  <div role="tabpanel" class="tab-pane" id="settings"></div>
+	</div>
+        
+        
         <div class="container">
             <div class="row">
                 <div class="col-md-6 panel" id="image_div_container">
@@ -163,10 +190,10 @@
                     Masks: <select id="select_mask"></select><br><br>
                     Drag to select slide from this session: <br>
                     <input id=select_slice type="range" min="0" max="9" value="0" onchange="change_slice(this.value)" style="width:300px">
-                    You are viewing slice number <span id="slice_num"></span> out of <span id="slice_total"></span> <br>
+                    You are viewing slice number <span id="slice_num"></span> out of <span id="slice_total"></span> 
 
                     <br>
-                    Mask visible: <input type="checkbox" id="mask_visible" checked> <br><br>
+                    Mask visible: <input type="checkbox" id="mask_visible"  checked> <br></input>
                     Mask Opacity:<input type="range" min="0" max="100" value="50" id="mask_opacity" style="width: 100px;display:inline-block"><span id="mask_opacity_text">50</span>%<br>
                 </div>
                 <div class="col-md-4 panel" id="image_control_div">
