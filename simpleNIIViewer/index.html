@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="node_modules/webix/webix.css" type="text/css" charset="utf-8">
+    <script src="node_modules/webix/webix.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="js/papaya.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/papaya.css" />
+    <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
+    <title>Papaya Viewer</title>
+</head>
+
+<body>
+    <!--  class="papaya" >
+     -->
+    <!-- class="papaya" params=""> -->
+    <div id="areaA" class="papaya" data-params="params">
+   <button id="swap-slice" class="papaya-main-swap" type="button" style="display: block; top: 475px; left: 700px; position: relative;">Swap Main Slice</button> 
+    </div>
+    </div>
+    <script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        $(".papaya-main-swap").click(function() {
+            papaya.viewer.Viewer.prototype.rotateViews();
+        });
+    });
+
+    var params = [];
+
+	var    leftPanel = { view: "template", template: "Left Panel" } 
+	var rightPanel = { rows: [{ view: "template", body: { content: "areaA" } }] }
+    //https://stackoverflow.com/questions/33108712/papaya-dicom-image-viewer-swap-main-slice //https://stackoverflow.com/questions/32972955/papaya-viewer-command-to-view-next-slice //https://github.com/rii-mango/Papaya/wiki/Configuration //https://github.com/rii-mango/Papaya/wiki/How-To-Make-a-Context-Manager var params = []; // params["worldSpace"] = true;
+  //https://stackoverflow.com/questions/49766612/make-pagination-in-papaya-dicom-viewer-slices-using-javascript
+
+    mainImg = "data/AYOTTE_KATIWOODY/axl-t2_Beagle_WoodyAyotte_UGA3T_218038_AYOTTE_KATIWOODY_SCAN2.nii.gz";
+    maskImg = "data/AYOTTE_KATIWOODY/axial_mask/laxl-t2_Beagle_WoodyAyotte_UGA3T_218038_AYOTTE_KATIWOODY_SCAN2_axialmask.nii.gz";
+
+    secondMaskImg = "data/AYOTTE_KATIWOODY/axial_mask/laxl-t2_Beagle_WoodyAyotte_UGA3T_218038_AYOTTE_KATIWOODY_SCAN2_axialmask.nii.gz";
+
+    
+
+		params["laxl-t2_Beagle_WoodyAyotte_UGA3T_218038_AYOTTE_KATIWOODY_SCAN2_axialmask.nii.gz"] = {"min": 0
+		, "max": 10, "lut": "Fire"};
+
+    params["images"] = [mainImg, maskImg] ;
+
+
+    nii_layout = { cols: [leftPanel, rightPanel] }
+    webix.ready(function() { webix.ui(nii_layout);
+        webix.message("HELLO WORLD") })
+
+
+    //So workflow..
+
+
+//    			<<SCAN DIRECTORY>>
+//  if you find a file_mask.nii.gz  it associates it with the parent file
+//
+
+
+    // $("#areaA").addClass("papaya") // })
+    </script>
+</body>
+
+</html>
