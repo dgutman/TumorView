@@ -1,0 +1,18 @@
+@import '../../stylesheets/variables.scss';
+@import '../../stylesheets/colors.scss';
+
+.PapayaExpanded {
+  display: flex;
+  .__papaya-viewer {
+    display: flex;
+    width: 50%
+  }
+  .__additional-controls {
+    display: flex;
+    width: 25%;
+  }
+  .__directory-browser {
+    display: flex;
+    width: 25%;
+  }
+}

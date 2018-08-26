@@ -1,0 +1,28 @@
+@import 'colors.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  color: $blueGray;
+  background-color: $offWhite;
+  height: 100%;
+  width: 100%;
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+  font-family: 'Open Sans', sans-serif;
+}
+
+a {
+  cursor: pointer;
+  &:hover {
+    color: $blue;
+  }
+}
+
+.Container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}

@@ -1,0 +1,37 @@
+@import '../../../stylesheets/colors';
+@import '../../../stylesheets/variables';
+
+.Table {
+  display: flex;
+  margin-top: 1em;
+  flex-direction: column;
+  .__table-labels {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    border-bottom: $mediumGray solid 0.01em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    .__table-label-spacer {
+      display: flex;
+      width: 5%;
+    }
+    .__table-label {
+      color: $mediumGray;
+      display: flex;
+      align-items: center;
+      font-size: 0.9em;
+      .__label-text {
+      }
+      .__label-chevron {
+        margin-left: 0.5em;
+        font-size: 0.9em;
+      }
+    }
+  }
+  .__table-rows {
+    flex-direction: column;
+    display: flex;
+    width: 100%;
+  }
+}

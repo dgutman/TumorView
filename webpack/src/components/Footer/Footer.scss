@@ -1,0 +1,43 @@
+@import '../../stylesheets/variables.scss';
+@import '../../stylesheets/colors.scss';
+
+.Footer {
+  display: flex;
+  justify-content: center;
+  .__content {
+    margin-left: 2em;
+    margin-right: 2em;
+    display: flex;
+    width: $largeContentWidth;
+    .__left {
+      width: 25%;
+      .__logo {
+
+      }
+      .__site-abbrv {
+        font-size: 3em;
+      }
+    }
+    .__middle {
+      flex: 1;
+    }
+    .__right {
+      width: 50%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      .__menu {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        .__menu-item {
+          margin-left: 1em;
+          .__menu-item-text {
+            font-size: 1.5em;
+          }
+        }
+      }
+    }
+  }
+
+}

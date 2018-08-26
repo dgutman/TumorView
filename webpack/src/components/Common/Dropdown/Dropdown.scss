@@ -1,0 +1,49 @@
+@import '../../../stylesheets/colors.scss';
+@import '../../../stylesheets/variables.scss';
+
+.Dropdown {
+  height: 3em;
+  position: relative;
+  .__dropdown-title {
+    height: 100%;
+    display: flex;
+    color: $white;
+    align-items: center;
+    cursor: pointer;
+    .__dropdown-chevron {
+      font-size: 2em;
+      color: $white;
+    }
+    &:hover {
+      color: $gray;
+    }
+  }
+  .__dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    .__dropdown-content-list {
+      padding: 0 0 0 0;
+      margin: 0 0 0 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      list-style: none;
+      .__dropdown-content-list-item {
+        display: flex;
+        align-items: center;
+        font-size: 2em;
+        margin-left: 1em;
+        margin-right: 1em;
+        height: 2em;
+        &:hover {
+          color: $gray;
+        }
+      }
+    }
+    &._display {
+      display: flex;
+      box-shadow: 0 0 1em;
+    }
+  }
+}

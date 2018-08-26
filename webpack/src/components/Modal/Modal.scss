@@ -1,0 +1,24 @@
+@import '../../stylesheets/colors.scss';
+@import '../../stylesheets/variables.scss';
+
+.Modal {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  &._display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .__overlay {
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.3;
+  }
+}

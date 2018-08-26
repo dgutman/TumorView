@@ -1,0 +1,59 @@
+@import '../../stylesheets/variables.scss';
+@import '../../stylesheets/colors.scss';
+
+.Header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: $headerHeights;
+  background-color: $darkBlue;
+  color: $white;
+  .__left {
+    margin-left: 2em;
+    margin-right: 2em;
+    align-items: center;
+    h1 {
+      font-size: 1em;
+    }
+  }
+  .__middle {
+    height: 100%;
+    .__navigation {
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+      .__navigation-link {
+        padding-left: 1em;
+        padding-right: 1em;
+        height: 100%;
+        display: flex;
+        width: 9em;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        &._selected {
+          background-color: $blueGray;
+        }
+        .__icon {
+          font-size: 1.5em;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+        }
+      }
+    }
+    flex: 1;
+  }
+  .__right {
+    display: flex;
+    align-items: center;
+    .__config {
+      margin-right: 1em;
+      color: $white;
+      outline: none;
+      border: none;
+      background: $darkBlue;
+      font-size: 1.5em;
+    }
+  }
+}

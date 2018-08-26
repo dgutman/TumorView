@@ -1,0 +1,36 @@
+@import '../../../stylesheets/colors';
+@import '../../../stylesheets/variables';
+
+.Selector {
+  border-radius: 5%;
+  display: flex;
+  flex-direction: row;
+  .__left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    margin-left: 1em;
+    .__selected-item {
+      .__selected-item-text {
+        font-weight: bolder;
+      }
+    }
+  }
+  .__right {
+    padding: 0 0 0 0;
+    margin : 0 0 0 0;
+    width: 1em;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .__carets {
+      i {
+        display: flex;
+        width: 100%;
+        height: 1em;
+        font-size: 1em;
+      }
+    }
+  }
+}

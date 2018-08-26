@@ -1,0 +1,67 @@
+@import '../../../stylesheets/colors.scss';
+@import '../../../stylesheets/variables.scss';
+
+.LoginModal {
+  padding: 2em 2em 2em 2em;
+  z-index: 2;
+  opacity: 1;
+  background-color: $white;
+  box-shadow: 0 0 0.01em;
+  width: 25em;
+  height: 20em;
+  .__modal-top {
+    border-bottom: 0.01em solid;
+    h1 {
+      margin-top: 0;
+      margin-bottom: 0.5em;
+      font-size: 3em;
+    }
+  }
+  .__modal-middle {
+    display: flex;
+    flex-direction: column;
+    .__input {
+      margin-top: 1em;
+      display: flex;
+      flex-direction: column;
+      label {
+        font-size: 1.5em;
+      }
+      .__error {
+        margin-bottom: 0.5em;
+        color: $red;
+      }
+      .__input-text {
+        margin-top: 0.5em;
+        outline: none;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 0.25em solid;
+        //border-bottom: 0.1em solid $blue;
+        &._ready {
+          border-bottom: 0.25em solid $green;
+        }
+        &._error {
+          border-bottom: 0.25em solid $red;
+        }
+      }
+    }
+  }
+  .__modal-bottom {
+    margin-top: 1em;
+    display: flex;
+    justify-content: center;
+    .__button {
+      outline: none;
+      border: none;
+      width: 10em;
+      height: 3em;
+      color: $white;
+      &._disabled {
+        background-color: $gray;
+        color: $white;
+      }
+    }
+  }
+}
